@@ -8,6 +8,12 @@ The Open API specification for "THE" Telnyx Demo application
 
 </div>
 
+## Versions
+
+| Version                     | Description                                  |
+|:----------------------------|:---------------------------------------------|
+| [v1](cpaas-example.v1.json) | Basic number search & order, Basic Messaging |
+
 ## Relevant Documentation
 
 The full documentation and tutorial is available on [developers.telnyx.com](https://developers.telnyx.com/)
