@@ -1,0 +1,350 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "contact": {
+      "email": "support@telnyx.com"
+    },
+    "title": "cpaas-example",
+    "version": "1.0",
+    "description": "Basic SDK validation application"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/available-numbers": {
+      "get": {
+        "summary": "Search available numbers",
+        "tags": [
+          "search numbers"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Available-Numbers-Response"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-available-numbers",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "212"
+            },
+            "in": "query",
+            "name": "areaCode",
+            "description": "Area Code to Search"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "3"
+            },
+            "in": "query",
+            "name": "quantity",
+            "description": "Number of results to return"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "Raleigh"
+            },
+            "in": "query",
+            "name": "city",
+            "description": "City to search"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "NC"
+            },
+            "in": "query",
+            "name": "state",
+            "description": "2 letter abbreviation of the state to search"
+          }
+        ],
+        "description": "Search Telnyx Inventory for available numbers in the USA by area code or city / state"
+      }
+    },
+    "/phone-numbers": {
+      "post": {
+        "summary": "Order new Phone Number",
+        "operationId": "post-phone-numbers",
+        "responses": {
+          "201": {
+            "description": "OK",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phone-Number-Order"
+                }
+              }
+            }
+          }
+        },
+        "description": "Order a single phone number",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phone-Number-Order"
+              }
+            }
+          },
+          "description": "Payload to order a phone number"
+        },
+        "tags": [
+          "search numbers"
+        ]
+      }
+    },
+    "/messages": {
+      "post": {
+        "summary": "Send a message with Telnyx",
+        "operationId": "post-messages",
+        "responses": {
+          "201": {
+            "description": "OK",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message-Response"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Message-Request"
+              }
+            }
+          }
+        },
+        "tags": [
+          "messaging"
+        ],
+        "description": "Sends a message to the `to` number provided in the payload. Should set the webhook_url to `/webhooks/messages/outbound` to receive the DLR"
+      }
+    },
+    "/webhooks/messages/inbound": {
+      "post": {
+        "summary": "",
+        "operationId": "post-webhooks-messages-inbound",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Should accept Telnyx Webhooks for inbound messages (https://developers.telnyx.com/docs/api/v2/messaging/Messages)\n\nShould use available SDK models to de-serialize into native objects (if available)\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Inbound-Message-Webhook"
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "messaging",
+          "webhooks"
+        ]
+      }
+    },
+    "/webhooks/messages/outbound": {
+      "post": {
+        "summary": "",
+        "operationId": "post-webhooks-messages-outbound",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Should accept Telnyx Webhooks for inbound messages (https://developers.telnyx.com/docs/api/v2/messaging/Messages)\n\nShould use available SDK models to de-serialize into native objects (if available)",
+        "tags": [
+          "messaging",
+          "webhooks"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Outbound-Message-Webhook"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Available-Numbers-Response": {
+        "title": "Available-Numbers-Response",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "x-examples": {
+          "Simple Example Response": [
+            "+19198675309",
+            "+19198675310",
+            "+19198675311"
+          ]
+        },
+        "description": "Response returned from searching available-numbers",
+        "x-tags": [
+          "search numbers"
+        ]
+      },
+      "Phone-Number-Order": {
+        "title": "Phone-Number-Order",
+        "type": "object",
+        "x-tags": [
+          "search numbers"
+        ],
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "description": "Desired Phone Number to order",
+            "example": "+19198675309"
+          },
+          "reference": {
+            "type": "string",
+            "example": "my tag 123",
+            "description": "The custom reference to pass to the Telnyx API"
+          }
+        },
+        "required": [
+          "phoneNumber"
+        ]
+      },
+      "Message-Request": {
+        "title": "Message-Request",
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string",
+            "example": "+19198675310",
+            "description": "The Telnyx Phone Number"
+          },
+          "from": {
+            "type": "string",
+            "example": "+19198675309",
+            "description": "Customer Phone Number"
+          },
+          "text": {
+            "type": "string",
+            "example": "Hello World",
+            "description": "Text to send customer"
+          },
+          "mediaUrls": {
+            "type": "array",
+            "description": "List of publicly addressable images to send as an MMS",
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "example": "http://public-url.com/dog.jpg"
+            }
+          }
+        },
+        "required": [
+          "to",
+          "from",
+          "text"
+        ],
+        "x-examples": {
+          "Send Message": {
+            "to": "+19198675310",
+            "from": "+19198675309",
+            "text": "Hello World"
+          },
+          "Send Picture Message": {
+            "to": "+19198675310",
+            "from": "+19198675309",
+            "text": "Hello World",
+            "mediaUrls": [
+              "http://public-url.com/dog.jpg"
+            ]
+          }
+        }
+      },
+      "Message-Response": {
+        "title": "Message-Response",
+        "type": "object",
+        "description": "Response from Telnyx API",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The message ID"
+          },
+          "message": {
+            "$ref": "#/components/schemas/Message-Request"
+          }
+        },
+        "x-examples": {
+          "Response": {
+            "id": "string",
+            "message": {
+              "to": "+19198675310",
+              "from": "+19198675309",
+              "text": "Hello World",
+              "mediaUrls": [
+                "http://public-url.com/dog.jpg"
+              ]
+            }
+          }
+        }
+      },
+      "Inbound-Message-Webhook": {
+        "title": "Inbound-Message-Webhook",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "Outbound-Message-Webhook": {
+        "title": "Outbound-Message-Webhook",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "search numbers"
+    },
+    {
+      "name": "messaging"
+    },
+    {
+      "name": "webhooks"
+    }
+  ]
+}
