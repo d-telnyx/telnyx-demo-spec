@@ -20,10 +20,14 @@ The full documentation and tutorial is available on [developers.telnyx.com](http
 
 ## Capabilities
 
-* Search phone numbers by areaCode, City, State
-* Order phone number with a "reference"
-* Send SMS / MMS from a Telnyx Number
-* Receive inbound/outbound Message Callbacks
+* [Phone Numbers](#phone-numbers)
+  * Search phone numbers by areaCode, City, State
+  * Order phone number with a "reference"
+* [Messaging](#messaging)
+  * Send SMS / MMS from a Telnyx Number
+  * Receive inbound/outbound Message Callbacks
+
+## Phone Numbers
 
 ### Searching Numbers
 
@@ -34,6 +38,8 @@ It's expected the user will pick one of the numbers in the response and order th
 ### Ordering Numbers
 
 Proxies the number order request to the Telnyx API and return the response if successful
+
+## Messaging
 
 ### Sending Messages
 
