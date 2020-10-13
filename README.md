@@ -1,6 +1,6 @@
 <div align="center">
 
-# Telnyx Node Demo Spec
+# Telnyx Demo Application Spec
 
 ![Telnyx](logo-dark.png)
 
@@ -12,7 +12,7 @@ The Open API specification for "THE" Telnyx Demo application
 
 | Version                     | Description                                  |
 |:----------------------------|:---------------------------------------------|
-| [v1](cpaas-example.v1.json) | Basic number search & order, Basic Messaging |
+| [v1-cpaas-example](cpaas-example.v1.json) | Basic number search & order, Basic Messaging |
 
 ## Relevant Documentation
 
